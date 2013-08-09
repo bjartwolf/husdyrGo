@@ -4,6 +4,15 @@ import "fmt"
 import "github.com/cznic/mathutil"
 import "sort"
 
+func indexOf (array sort.StringSlice, lookingFor string) int {
+	for i, value := range array {
+		if (value == lookingFor) {
+			return i
+		}
+	}
+	return -1
+}
+
 func main () {
 	persons := sort.StringSlice{"arne", "beb", "cecilie"}
 	drikke := sort.StringSlice{"kaffe", "te", "pils"}
@@ -27,6 +36,7 @@ func main () {
 			fmt.Println("******************")
 			fmt.Println(persons)
 			fmt.Println(drikke)
+			fmt.Println(indexOf(drikke, "pils"))
 		}
 	}
 }
