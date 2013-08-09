@@ -13,8 +13,7 @@ func main () {
 */
 	mathutil.PermutationFirst(persons)
 	morePermutations := true 
-	for (morePermutations) {
+	for ;morePermutations; morePermutations = mathutil.PermutationNext(persons) {
 		fmt.Println(persons)
-		morePermutations = mathutil.PermutationNext(persons)
 	}
 }
