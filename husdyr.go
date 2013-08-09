@@ -14,11 +14,16 @@ func main () {
 	mathutil.PermutationFirst(persons)
 //	mathutil.PermutationFirst(drikke)
 	for personPerm, p := true, 0; personPerm ; personPerm, p = mathutil.PermutationNext(persons), p + 1 {
-//		if (persons[1] == "arne") {
-//			continue;
-//		}
+		// Arne bor i det første huset
+		if (persons[0] != "arne") {
+			continue
+		}
 		mathutil.PermutationFirst(drikke)
 		for drikk, drikkePerm := 0, true; drikkePerm; drikk, drikkePerm = drikk + 1,  mathutil.PermutationNext(drikke){
+			// Person i siste huset (n=2) drikker ikke te
+			if (drikke[2] == "te") {
+				continue
+			}
 			fmt.Println("******************")
 			fmt.Println(persons)
 			fmt.Println(drikke)
