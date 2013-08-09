@@ -35,18 +35,18 @@ func main () {
       drinks := sort.StringSlice{"milk", "tea", "water", "orangejuice", "coffee"}
       mathutil.PermutationFirst(drinks)
       for drinksPerm := true; drinksPerm; drinksPerm =  mathutil.PermutationNext(drinks){
-        // Rule #Ukranian drinks tea 
+        // Rule #5 Ukranian drinks tea 
         if (indexOf(drinks, "tea") != indexOf(persons, "ukranian")) {
           continue
         }
-      // Person i siste huset (n=2) drinksr ikke te
-//      if (drinks[2] == "te") {
-//        continue
-//      }
-      // Arne drinksr te
-//      if (indexOf(drinks, "te") != indexOf(persons, "arne")) {
-//        continue
-//      }
+        // Rule #4 Coffee is drunk in the green house
+        if (indexOf(drinks, "coffee") != indexOf(colors, "green")) {
+          continue
+        }
+        // Rule #9 Milk is drunk in the middle house (n=2)
+        if (indexOf(drinks, "milk") != 2) {
+          continue
+        }
         fmt.Println("******************")
         fmt.Println(persons)
         fmt.Println(drinks)
