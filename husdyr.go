@@ -6,13 +6,22 @@ import "sort"
 
 func main () {
 	persons := sort.StringSlice{"arne", "beb", "cecilie"}
-/*	drikke := []string{"kaffe", "te", "pils"}
-	for _, person := range persons {
+	drikke := sort.StringSlice{"kaffe", "te", "pils"}
+/*	for _, person := range persons {
 		fmt.Println(person)
 	}
 */
 	mathutil.PermutationFirst(persons)
-	for morePermutations := true ;morePermutations; morePermutations = mathutil.PermutationNext(persons) {
-		fmt.Println(persons)
+//	mathutil.PermutationFirst(drikke)
+	for personPerm, p := true, 0; personPerm ; personPerm, p = mathutil.PermutationNext(persons), p + 1 {
+//		if (persons[1] == "arne") {
+//			continue;
+//		}
+		mathutil.PermutationFirst(drikke)
+		for drikk, drikkePerm := 0, true; drikkePerm; drikk, drikkePerm = drikk + 1,  mathutil.PermutationNext(drikke){
+			fmt.Println("******************")
+			fmt.Println(persons)
+			fmt.Println(drikke)
+		}
 	}
 }
