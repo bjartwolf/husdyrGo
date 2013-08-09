@@ -3,6 +3,7 @@ package main
 import "fmt"
 import "github.com/cznic/mathutil"
 import "sort"
+import "testing"
 
 func Abs (num int) int {
   if (num < 0) {
@@ -21,7 +22,7 @@ func indexOf (array sort.StringSlice, lookingFor string) int {
   return -1
 }
 
-func main () {
+func solve() {
   persons := sort.StringSlice{"ukranian", "norwegian", "japanese", "spaniard", "englishman"}
   mathutil.PermutationFirst(persons)
   for personPerm := true; personPerm ; personPerm = mathutil.PermutationNext(persons) {
@@ -94,16 +95,29 @@ func main () {
               if (indexOf(persons, "japanese") != indexOf(sigarettes, "parliament")) {
                 continue
               }
+/*
               fmt.Println("******************")
               fmt.Println(persons)
               fmt.Println(drinks)
               fmt.Println(colors)
               fmt.Println(sigarettes)
               fmt.Println(animals)
+*/
             }
           }
         }
       }
     }
   }
+}
+
+func BenchmarkFunction(b *testing.B) {
+    for i := 0; i < b.N; i++ {
+        solve()
+    }
+}
+
+func main () {
+    br := testing.Benchmark(BenchmarkFunction)
+    fmt.Println(br)
 }
