@@ -3,8 +3,12 @@ package main
 import "fmt"
 import "github.com/cznic/mathutil"
 import "sort"
+import "log"
 import "testing"
 import "runtime"
+import "flag"
+import "runtime/pprof"
+import "os"
 
 func Abs (num int) int {
   if (num < 0) {
@@ -33,7 +37,7 @@ type solution struct {
 
 func solve() {
   solutions := make(chan solution)
-  persons := sort.StringSlice{"ukranian", "norwegian", "japanese", "spaniard", "englishman"}
+  persons := sort.StringSlice{"ukranian", "norwegian", "japanese", "englishman", "spaniard"}
   mathutil.PermutationFirst(persons)
   for personPerm := true; personPerm ; personPerm = mathutil.PermutationNext(persons) {
     // Rule #1: Norweigan lives in first house 
@@ -45,12 +49,17 @@ func solve() {
     personArr = sort.StringSlice{persons[0], persons[1], persons[2], persons[3], persons[4]}
     go solveForPerson(personArr, solutions)
   }
-  //solution := <-solutions
+ // solution := <-solutions
   <-solutions
+//  fmt.Println(solution)
 }
 
 func solveForPerson(persons sort.StringSlice, solutions chan solution) {
-	    colors := sort.StringSlice{"yellow", "blue", "red", "green", "ivory"}
+      var colors sort.StringSlice
+      var sigarettes sort.StringSlice
+      var animals sort.StringSlice
+      colors = sort.StringSlice{"yellow", "blue", "red", "green", "ivory"}
+      var drinks sort.StringSlice
 	    mathutil.PermutationFirst(colors)
 	    for colorsPerm:= true; colorsPerm; colorsPerm= mathutil.PermutationNext(colors){
 	      // Rule #2: Englishman lives in red house
@@ -61,7 +70,7 @@ func solveForPerson(persons sort.StringSlice, solutions chan solution) {
 	      if (indexOf(colors, "green") - indexOf(colors, "ivory") != 1) {
           continue
 	      }
-	      drinks := sort.StringSlice{"milk", "tea", "water", "orangejuice", "coffee"}
+	      drinks = sort.StringSlice{"milk", "tea", "water", "orangejuice", "coffee"}
 	      mathutil.PermutationFirst(drinks)
 	      for d := true; d; d = mathutil.PermutationNext(drinks){
             // Rule #5 Ukranian drinks tea 
@@ -76,7 +85,7 @@ func solveForPerson(persons sort.StringSlice, solutions chan solution) {
             if (indexOf(drinks, "milk") != 2) {
               continue
             }
-            sigarettes := sort.StringSlice{"kools", "chesterfield", "oldgold", "parliament", "luckystrike"}
+            sigarettes = sort.StringSlice{"kools", "chesterfield", "oldgold", "parliament", "luckystrike"}
             mathutil.PermutationFirst(sigarettes)
             for s:= true; s; s = mathutil.PermutationNext(sigarettes){
               // Rule #8 Yellow house smokes kools
@@ -87,7 +96,7 @@ func solveForPerson(persons sort.StringSlice, solutions chan solution) {
               if (indexOf(sigarettes, "luckystrike") != indexOf(drinks, "orangejuice")) {
                 continue
               }
-              animals := sort.StringSlice{"zebra", "snails", "dog", "horse", "fox"}
+              animals = sort.StringSlice{"zebra", "snails", "dog", "horse", "fox"}
               mathutil.PermutationFirst(animals)
               for s:= true; s; s = mathutil.PermutationNext(sigarettes){
                 for a:= true; a; a = mathutil.PermutationNext(animals) {
@@ -116,6 +125,7 @@ func solveForPerson(persons sort.StringSlice, solutions chan solution) {
                     continue
                   }
                   solution := solution{persons, drinks, colors, sigarettes, animals}
+                  fmt.Println(solution)
                   solutions <-solution
                 }
               }
@@ -129,8 +139,20 @@ func BenchmarkFunction(b *testing.B) {
         solve()
     }
 }
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+
 func main () {
   runtime.GOMAXPROCS(4)
-  br := testing.Benchmark(BenchmarkFunction)
-  fmt.Println(br)
+	flag.Parse()
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
+  fmt.Println(testing.Benchmark(BenchmarkFunction))
+//  br := testing.Benchmark(BenchmarkFunction)
+//  fmt.Println(br)
 }
