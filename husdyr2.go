@@ -4,12 +4,9 @@ import "github.com/cznic/mathutil"
 import "sort"
 import "runtime"
 
-func Abs(num int) int {
-	if num < 0 {
-		return -num
-	} else {
-		return num
-	}
+func Abs(x int) int {
+    y := x >> 31
+    return (x ^ y) - y
 }
 
 func indexOf(array sort.StringSlice, lookingFor string) int {
